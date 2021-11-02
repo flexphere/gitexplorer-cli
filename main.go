@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"prompt/options"
-
 	"github.com/atotto/clipboard"
+	"github.com/flexphere/gitexplorer-cli/options"
 	"github.com/manifoldco/promptui"
 )
 
