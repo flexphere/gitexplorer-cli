@@ -21,11 +21,11 @@ func main() {
 	secondaryOptions := options.NewMap("secondary")
 	tertiaryOptions := options.NewMap("tertiary")
 
-	primaryLabel, err := promptSelection("I want to", primaryOptions.GetLabels())
+	primaryLabel, err := PromptSelection("I want to", primaryOptions.GetLabels())
 	errorHandler(err)
 	primaryValue := primaryOptions.GetValue(primaryLabel)
 
-	secondaryLabel, err := promptSelection(primaryLabel, secondaryOptions.GetLabels(primaryValue))
+	secondaryLabel, err := PromptSelection(primaryLabel, secondaryOptions.GetLabels(primaryValue))
 	errorHandler(err)
 	secondaryValue := secondaryOptions.GetValue(primaryValue, secondaryLabel)
 	if secondaryValue.HasUsage() {
@@ -33,7 +33,7 @@ func main() {
 		return
 	}
 
-	tertiaryLabel, err := promptSelection(secondaryLabel, tertiaryOptions.GetLabels(secondaryValue.Value))
+	tertiaryLabel, err := PromptSelection(secondaryLabel, tertiaryOptions.GetLabels(secondaryValue.Value))
 	errorHandler(err)
 
 	tertiaryValue := tertiaryOptions.GetValue(secondaryValue.Value, tertiaryLabel)
@@ -48,7 +48,7 @@ func PrintAndExit(result options.Option) {
 	clipboard.WriteAll(result.Usage)
 }
 
-func promptSelection(prefix string, options []string) (string, error) {
+func PromptSelection(prefix string, options []string) (string, error) {
 	prompt := promptui.Select{
 		Label: prefix,
 		Items: options,
