@@ -41,10 +41,12 @@ func main() {
 }
 
 func PrintAndExit(result options.Option) {
-	fmt.Println(promptui.Styler(promptui.FGBold)(result.Usage))
+	fmt.Println("\n" + promptui.Styler(promptui.FGGreen)(result.Usage) + "\n")
 	if result.Note != "" {
 		fmt.Println(result.Note)
 	}
+
+	fmt.Printf("\nCopied to clipboard!\n")
 	clipboard.WriteAll(result.Usage)
 }
 
