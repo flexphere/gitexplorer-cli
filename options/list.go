@@ -1,8 +1,8 @@
 package options
 
 import (
+	_ "embed"
 	"encoding/json"
-	"io/ioutil"
 )
 
 type Option struct {
@@ -12,16 +12,18 @@ type Option struct {
 	Note  string `json:"nb,omitempty"`
 }
 
+//go:embed assets/primary-options.json
+var primaryJSON []byte
+
 func (o Option) HasUsage() bool {
 	return o.Usage != ""
 }
 
 type List []Option
 
-func NewList(file string) *List {
+func NewList() *List {
 	var options List
-	byteValue, _ := ioutil.ReadFile(file)
-	json.Unmarshal(byteValue, &options)
+	json.Unmarshal(primaryJSON, &options)
 	return &options
 }
 

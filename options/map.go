@@ -1,15 +1,27 @@
 package options
 
 import (
+	_ "embed"
 	"encoding/json"
-	"io/ioutil"
 )
 
 type Map map[string]List
 
-func NewMap(file string) *Map {
+//go:embed assets/secondary-options.json
+var secondaryJSON []byte
+
+//go:embed assets/tertiary-options.json
+var tertiaryJSON []byte
+
+func NewMap(key string) *Map {
 	var options Map
-	byteValue, _ := ioutil.ReadFile(file)
+	var byteValue []byte
+	if key == "secondary" {
+		byteValue = secondaryJSON
+	}
+	if key == "tertiary" {
+		byteValue = tertiaryJSON
+	}
 	json.Unmarshal(byteValue, &options)
 	return &options
 }

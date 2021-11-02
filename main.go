@@ -17,26 +17,19 @@ func errorHandler(err error) {
 }
 
 func main() {
-	primaryOptions := options.NewList("./primary-options.json")
-	secondaryOptions := options.NewMap("./secondary-options.json")
-	tertiaryOptions := options.NewMap("./tertiary-options.json")
+	primaryOptions := options.NewList()
+	secondaryOptions := options.NewMap("secondary")
+	tertiaryOptions := options.NewMap("tertiary")
 
 	primaryLabel, err := promptSelection("I want to", primaryOptions.GetLabels())
 	errorHandler(err)
-
 	primaryValue := primaryOptions.GetValue(primaryLabel)
 
 	secondaryLabel, err := promptSelection(primaryLabel, secondaryOptions.GetLabels(primaryValue))
 	errorHandler(err)
-
 	secondaryValue := secondaryOptions.GetValue(primaryValue, secondaryLabel)
-
 	if secondaryValue.HasUsage() {
-		fmt.Println(secondaryValue.Usage)
-		if secondaryValue.Note != "" {
-			fmt.Println(secondaryValue.Note)
-		}
-		clipboard.WriteAll(secondaryValue.Usage)
+		PrintAndExit(secondaryValue)
 		return
 	}
 
@@ -44,12 +37,15 @@ func main() {
 	errorHandler(err)
 
 	tertiaryValue := tertiaryOptions.GetValue(secondaryValue.Value, tertiaryLabel)
-	fmt.Println(tertiaryValue.Usage)
-	if tertiaryValue.Note != "" {
-		fmt.Println(tertiaryValue.Note)
-	}
+	PrintAndExit(tertiaryValue)
+}
 
-	clipboard.WriteAll(tertiaryValue.Usage)
+func PrintAndExit(result options.Option) {
+	fmt.Println(result.Usage)
+	if result.Note != "" {
+		fmt.Println(result.Note)
+	}
+	clipboard.WriteAll(result.Usage)
 }
 
 func promptSelection(prefix string, options []string) (string, error) {
