@@ -41,7 +41,7 @@ func main() {
 }
 
 func PrintAndExit(result options.Option) {
-	fmt.Println(result.Usage)
+	fmt.Println(promptui.Styler(promptui.FGBold)(result.Usage))
 	if result.Note != "" {
 		fmt.Println(result.Note)
 	}
